@@ -28,7 +28,7 @@ $(".get_product").click(function( event ){
 
 	       '<span class="badge">Cantidad : <strong class="count">1</strong> Total : $<strong class="total">'+$price+'</strong>'+
 	      	' <a class="btn-floating btn-small waves-effect waves-light teal darken-1 pluss"><i class="material-icons">add</i></a>'+
-	      	' <a class="btn-floating btn-small waves-effect waves-light red less"><i class="material-icons">remove</i></a>'+
+	      	' <a class="btn-floating btn-small waves-effect waves-light red disabled less"><i class="material-icons">remove</i></a>'+
 		   '</span></div>'+
 	  	'</li>').fadeIn();
 
@@ -40,18 +40,22 @@ $(".get_product").click(function( event ){
 		
 
 	}else {
-
+		
 		$coded = $(this).parent().parent().parent().parent().find('.code_product').html();
-
-		$cantidad = parseInt($("#"+$coded).find('.count').html()) ;
-
-		$total = parseInt($("#"+$coded).find('.total').html()) ;
 		
-	  	$("#total_pro").html( parseInt( $("#total_pro").html() )- $cantidad );
-		
-		$("#total_pri").html( parseInt( $("#total_pri").html() )- $total );	
+		if( $("#"+$coded).length > 0 ){
+	
+			$cantidad = parseInt($("#"+$coded).find('.count').html()) ;
+	
+			$total = parseInt($("#"+$coded).find('.total').html()) ;
+			
+		  	$("#total_pro").html( parseInt( $("#total_pro").html() )- $cantidad );
+			
+			$("#total_pri").html( parseInt( $("#total_pri").html() )- $total );	
+	
+			$("#"+$coded).remove();
+		}
 
-		$("#"+$coded).remove();
 
 	}
 
@@ -91,7 +95,10 @@ events_sum_etc = true;
 			$total = $(this).parent().find('.total').html();
 			// parsear y realizar operaciones con las canridades  optenidas
 			$new_cantidad = parseInt($cantidad)+1;		
-		
+
+			if( parseInt($cantidad)+1 > 1 ){
+				$(this).parent().find(".less").removeClass('disabled');
+			}else $(this).parent().find( ".less" ).addClass('disabled');		
 
 			$new_total = parseFloat($price_unit)*$new_cantidad;
 			// Imprimir cantidades de calculos
@@ -109,6 +116,11 @@ events_sum_etc = true;
 			/* Act on the event */
 			// Optener cantidad de producto
 			$cantidad =  $(this).parent().find('.count').html();
+			
+			if( parseInt($cantidad)-1 < 2 ){
+				$(this).addClass('disabled');
+			}else $( this ).removeClass('disabled');
+			
 			// optener precio por producto
 			$price_unit = $(this).parent().parent().parent().find('.unit_price').html();
 			//optener el total que sera cambiado poe uno nuevamente  calculado
