@@ -46,7 +46,7 @@ class ProductController extends Controller {
 		\Excel::load($request->file_doc, function ($reader) {
 
 				foreach ($reader->get() as $produc_exel) {
-
+					
 					$result = Product::where('code', (int) $produc_exel->code)->get()->first();
 					if (isset($result)) {
 
